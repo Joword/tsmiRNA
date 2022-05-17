@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-12">
+    <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Brain')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Brain.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Breast')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Breast.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='SkeletalMuscle')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/SkeletalMuscle.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Heart')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Heart.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Kidney')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Kidney.png')}}" style="width:100%"/></a>
+        </div>
+    </div>
+    <br/>
+    <div class="row">
+        <div class="col-1">
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Liver')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Liver.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Lung')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Lung.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Ovary')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Ovary.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Placenta')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Placenta.png')}}" style="width:100%"/></a>
+        </div>
+        <div class="col-2">
+            <a href="{{ url_for('browseTS', tissue='Adrenal')}}"><img
+                    src="{{ url_for('sTaTic', filename='img/human/Adrenal.png')}}" style="width:100%"/></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

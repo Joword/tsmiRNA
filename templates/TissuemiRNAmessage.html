@@ -1,0 +1,232 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-12">
+    <br/>
+    <h3><strong>message of <font style="color:red"> {{ tissuemiRNA_name }}</font></strong></h3>
+</div>
+<br/>
+<br/>
+<div class="col-12">
+    <table id="tissuemesageTable" class="table table-hover table-striped table-advanced table-bordered">
+        <thead>
+        {% for h in header %}
+        <th>{{ h }}</th>
+        {% endfor %}
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<br/>
+<hr/>
+<br/>
+<br/>
+
+
+<div class="col-12">
+    <div id='tf_normal_exp' style="width:100%; height:400px;"></div>
+</div>
+<div class="col-12">
+    <div id='tf_cancer_exp' style="width:100%; height:400px;"></div>
+</div>
+
+
+{% endblock %}
+
+
+{% block script %}
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#tissuemesageTable").DataTable({
+            // 添加两个使用按钮
+            destroy: true,
+            "processing": true,
+            "serverSide": true,
+            // "searching": false,
+            "procession": false,
+            "pagingType": "full_numbers",
+            // 添加两个使用按钮
+            'dom': 'lBfrtip',
+            ajax: {
+                url: "{{ url_for('api.tissuemiRNAmessage')}}",
+                data: function (data) {
+                    for (var i = 0, len = data.columns.length; i < len; i++) {
+                        delete data.columns
+                    }
+                    delete data.search.regex
+                    data.tissuemiRNA = "{{ tissuemiRNA_name }}"
+                }
+            },
+            "columns": [
+                {
+                    data: "miRNA"
+                },
+                {
+                    data: "Types"
+                },
+                {
+                    data: "CancerORNormal"
+                },
+                {
+                    data: "GainORLost"
+                },
+                {
+                    data: "Expression"
+                },
+                {
+                    data: "TSI"
+                },
+                {
+                    data: "CoefficientOfVariation"
+                }
+            ]
+        });
+    })
+
+
+    // echarts
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('tf_normal_exp'), 'macarons');
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '{{ tissuemiRNA_name }} Expression(Normal)  across Tissue',
+        },
+        subtitle: {
+            text: 'Normal'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        yAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        xAxis: {
+            axisLabel: {
+                textStyle: {
+                    fontSize: 10
+                },
+                interval: 0,
+                rotate: 30
+            },
+            axisLine: {
+                onZero: false,
+            },
+            type: 'category',
+            data: {
+    {
+        tf_normal['xAxis'] | safe
+    }
+    }
+    },
+    series: [
+        {
+            type: 'bar',
+            name: 'Expression value',
+            data: {{tf_normal['yAxis'] | safe}
+    }
+    },
+    ]
+    }
+    ;
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+    var myChart1 = echarts.init(document.getElementById('tf_cancer_exp'), 'roma');
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '{{ tissuemiRNA_name }} Expression(Cancer)  across Tissue',
+        },
+        subtitle: {
+            text: 'Cancer'
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        yAxis: {
+            type: 'log',
+            boundaryGap: [0, 0.01]
+        },
+        xAxis: {
+            axisLabel: {
+                textStyle: {
+                    fontSize: 10
+                },
+                interval: 0,
+                rotate: 30
+            },
+            type: 'category',
+            data: {
+    {
+        tf_cancer['xAxis'] | safe
+    }
+    }
+    },
+    series: [
+        {
+            type: 'bar',
+            name: 'Expression value',
+            data: {{tf_cancer['yAxis'] | safe}
+    }
+    },
+    ]
+    }
+    ;
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option);
+
+</script>
+
+
+{% endblock %}

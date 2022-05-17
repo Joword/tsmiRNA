@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<br/>
+<div class="row">
+
+    <div class="btn-group btn-group-toggle btn-group-lg" data-toggle="buttons" id="search">
+        <label class="btn btn-primary active">
+            <input name="options" type="radio" id="tsmiRNA">TS miRNA
+        </label>
+        <label class="btn btn-primary">
+            <input name="options" type="radio" id="panmiRNA">Pan miRNA
+        </label>
+        <label class="btn btn-primary">
+            <input name="options" type="radio" id="tissue">Tissue
+        </label>
+    </div>
+    <div class="col-6 input-group">
+        <input type="text" style="width:105% " class="form-control" id="input" data-toggle="hsa-mir-217"
+               placeholder="hsa-mir-217">
+    </div>
+    <div class="col-2 input-group">
+        <input type="submit" class="btn btn-primary btn-block" id="submit1" value="Search">
+    </div>
+
+</div>
+<br/>
+
+
+<br/>
+<div class="bs-docs-section">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron">
+                <h3>Description:</h3>
+                <br/>
+                <p class="lead" style="color:grey"><font style="color:red">TSmiRNA</font>(https://lcbb.swjtu.edu.cn/TSmiRNA),
+                    a free, web-accessible database, provides information about tissue-specific miRNA and interaction
+                    maps of tissue-specific miRNA, TF and gene according to High-throughput sequencing data. It
+                    currently covers 593 Cancer miRNA (253 tissue-specific miRNA, 106 pan-miRNA), 684 Normal miRNA(330
+                    tissue-specific miRNA, 67 pan-miRNA),136 cancer transcription factors, 137 cancer transcription,
+                    19722 miRNA-target in cancer, 20050 miRNA-target in normal across 13 tissues (Bladder, Blood, Brain,
+                    Breast, Cervix, Colorectal, Kidney, Liver, Lung, Pancreas, Prostate, Skin, Uterus). Furthermore,
+                    experimentally validated expression data of TF and gene is also collected. Users can use the “Search
+                    by name” function to retrieve the TF or gene interacting with miRNA(include:tissue-specific or pan)
+                    in cancer or normal. It is also accessible to retrieve tissue with miRNA(include: tissue-specifc,
+                    other or pan), TS or gene in cancer or normal, via “search by Tissue” function.</p>
+                <hr class="my-4">
+                <br/>
+                <h3>TS miRNA And Pan miRNA:“TS miRNA” and “Pan miRNA” contains feedforward loop information for two
+                    types of miRNAs. The two buttons contains that miRNA has expression, coefficient of variation, TSI,
+                    TSS (from Fantom) and some of other informations, transcription factor has expression, TSI, TFBS
+                    (from UCSC) and some of other informations, gene has expression, TSI, data sources, miR family and
+                    some of other informations. Here, it can search by miRNA, TF, Gene.</h3>
+                <br/>
+                <p class="lead" style="color:grey"></p>
+                <hr class="my-4">
+                <br/>
+                <h3>Tissue:“Tissue” contains information on all miRNA(include:tissue-specific other, pan) feedforward
+                    loops in 13 tissues. The button contains that miRNA has expression, coefficient of variation, TSI,
+                    TSS (from Fantom) and some of other informations, transcription factor has expression, TSI, TFBS
+                    (from UCSC) and some of other informations, gene has expression, TSI, data sources, miR family and
+                    so on, Here, it can search by tissue.</h3>
+                <br/>
+                <p class="lead" style="color:grey"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript">
+    $(document).on('input', 'input', function () {
+        $('#input').autoComplete(
+            {
+                source: function (term, response) {
+                    $.getJSON(
+                        "{{url_for('api.autocomplete')}}",
+                        {
+                            subtype: $('#search').children('label.active').children('input').attr('id'),
+                            q: term
+                        },
+                        function (data) {
+                            response(data.matching_results);
+                        }
+                    );
+                },
+                matching_results: 2,
+                select: function (event, ui) {
+                    console.log(ui.item.value);
+                }
+            }
+        )
+    })
+    var placeholders = {
+        "tsmiRNA": "eg: hsa-mir-217",
+        "panmiRNA": "eg: hsa-mir-140",
+        "tissue": "eg: Bladder"
+    }
+
+    $(document).on("click", "#search", function () {
+        var label = $("#search").children(".active").children("input").attr("id");
+        $("#input").attr("placeholder", placeholders[label]);
+        $("#input").attr("data-toggle", placeholders[label].replace("eg: ", ""))
+    })
+
+    $("#submit1").click(function () {
+        var type = $("#search").children(".active").children("input").attr("id");
+        var term = $("#input").val()
+
+        if (term == "") {
+            term = $("#input").attr("data-toggle")
+        }
+        if (type == "tsmiRNA") {
+            window.location.href = "{{ url_for('TSmiRNAmessage') }}?TSmiRNA=" + term
+        } else if (type == "panmiRNA") {
+            window.location.href = "{{ url_for('PanmiRNAmessage') }}?panmiRNA=" + term
+        } else if (type == "tissue") {
+            window.location.href = "{{ url_for('TissuemiRNAreg') }}?tissue=" + term
+        }
+
+
+    })
+</script>
+
+{% endblock %}

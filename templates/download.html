@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-12">
+    <div class="row">
+        <div class="col-5">
+        </div>
+        <div class="col-7">
+            <h3> Data Downloads</h3>
+        </div>
+    </div>
+</div>
+
+<br/>
+<hr/>
+<br/>
+
+<ul class="list-group">
+    {% for i in files %}
+    <li class="list-group-item d-flex justify-content-between align-items-center"><h5>
+        <a href="{{ url_for('sTaTic', filename=i.path) }}"><font style="color:grey">{{ i.name }}</font></a></h5>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

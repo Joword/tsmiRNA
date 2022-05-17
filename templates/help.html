@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="col-12">
+    <div class="col-12">
+        <h4>Home Page</h4>
+        <br/>
+        <img src="{{ url_for('sTaTic', filename='img/help/help-home.png') }}" style="width:100%"/>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+    <div class="col-12">
+        <h4>Browse Page</h4>
+        <br/>
+        <img src="{{ url_for('sTaTic', filename='img/help/help-browse.png') }}" style="width:100%"/>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+    <div class="col-12">
+        <h4>Detail information page for each enhancer</h4>
+        <br/>
+        <p>Here are five parts of enhancer-related information:</p>
+        <br/>
+        <img src="{{ url_for('sTaTic', filename='img/help/help-enh.png') }}" style="width:100%"/>
+    </div>
+    <br/>
+    <hr/>
+    <br/>
+    <div class="col-12">
+        <h4>Other Pages</h4>
+        <br/>
+        <ul>
+            <li>Apart from the three main page of TiED, there are also several other pages presenting information about
+                enhancers:
+                <ul>
+                    <li>TF page and gene page with regulatory with enhancers.</li>
+                    <li>•Pages for eRNA, tissue and tissue specificity which are all accessible by clicking on the
+                        corresponding information provided in the sheet for enhancers.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <img src="{{ url_for('sTaTic', filename='img/help/help-other.png') }}" style="width:100%"/>
+    </div>
+    <br/>
+
+    {% endblock %}
